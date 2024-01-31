@@ -7,21 +7,20 @@ def extract_emails(input_text):
     emails = email_pattern.findall(input_text)
     return emails
 
-def process_file(input_path):
-    output_path = f"{os.path.splitext(input_path)[0]}_emails.txt"
-
+def process_file(input_path, output_file):
     with open(input_path, 'r', encoding='utf-8', errors='ignore') as input_file:
         content = input_file.read()
         emails = extract_emails(content)
 
-    with open(output_path, 'w') as output_file:
+    with open(output_file, 'a') as output:
         for email in emails:
-            output_file.write(f"{email}\n")
+            output.write(f"{email}\n")
 
 if __name__ == "__main__":
     input_folder = os.path.abspath(os.path.dirname(__file__))  # Current folder where the script is located
+    output_file = "all_emails.txt"
 
     for root, dirs, files in os.walk(input_folder):
         for file in files:
             file_path = os.path.join(root, file)
-            process_file(file_path)
+            process_file(file_path, output_file)
